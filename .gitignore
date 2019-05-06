@@ -16,4 +16,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+venv
+.idea
 *.pyc
+__pycache__
