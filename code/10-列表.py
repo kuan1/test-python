@@ -75,8 +75,48 @@ print(list(a))
 ls = [0, 1, 2]
 ls.append('a')
 print(ls)
+# axtend 相当于 +=
 
 # 插入（下标,元素）
 ls = [0, 1, 2]
 ls.insert(1, 'aa')
 print(ls)
+
+# 清空
+ls.clear()
+print('清空', ls)
+
+# pop 删除返回删除元素
+ls = [0, 1, 2]
+ls.pop(1)
+print(ls)
+
+# 删除，只删除第一个
+ls = [1, 2, 2, 3, 4]
+ls.remove(2)
+print('remove: ', ls)
+
+# 反序
+ls = [1, 2, 3, 4]
+ls.reverse()
+print('反序:', ls)
+
+# 排序 sort
+ls = [1, 0, 2, 4]
+# ls.sort() # 正序
+ls.sort(reverse=True)  # 倒序
+print('sort', ls)
+
+
+# while遍历列表
+# ls = [0, 1, 2, 3]
+# i = 0
+# while i < len(ls):
+#     print(ls[i])
+#     i += 1
+
+
+# for 循环
+ls = ['a', 'b', 'c']
+for i in ls:
+    print(i)
