@@ -44,3 +44,18 @@ print(p.get_age())
 p.__age = 100
 print(p.__age)
 print(p.get_age())
+
+
+# 内存回收
+class A():
+    def __del__(self):
+        print('对象被删除了')
+
+
+def test():
+    a = A()
+    print('test运行了')
+
+
+test()
+print('结束了')
