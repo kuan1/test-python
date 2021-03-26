@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>郑州某网房价数据</title>
+  <style>
+    h2 {
+      text-align: center;
+    }
+
+    h4 {
+      margin: 0;
+      padding: .5em 0;
+    }
+
+    body {
+      background-color: #f7f7f7;
+    }
+
+    #app {
+      width: 92%;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .container {
+      display: grid;
+      justify-content: center;
+      grid-template-columns: repeat(auto-fill, 250px);
+      gap: 20px;
+    }
+
+    .card {
+      color: #333;
+      text-decoration: none;
+      background-color: white;
+      padding: 15px;
+      border-radius: 5px;
+      line-height: 1.5;
+      transition: transform .3s;
+    }
+
+    .card:hover {
+      background-color: #fefefe;
+      box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .price {
+      font-size: 14px;
+      color: #666;
+      padding: .5em 0;
+    }
+
+    .price strong {
+      color: red;
+      padding-right: .5em;
+    }
+
+    .address {
+      font-size: 14px;
+      padding: .5em 0;
+    }
+
+    .info {
+      color: #666;
+      font-size: 12px;
+    }
+
+    .pagination {
+      text-align: center;
+      padding: 1em;
+    }
+
+    .pagination .active {
+      background-color: #40A9FF;
+      color: white;
+      border-color: #40A9FF;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>
+    <span>郑州某网房价数据</span>
+    <a href="./statistics.html">查看统计</a>
+  </h2>
+  <div id="app">
+    <div class="container">
+      <a class="card" v-for="(item, i) in data" target="__blank" :key="i" :href="item.href">
+        <h4>{{item.title}}</h4>
+        <div class="price">
+          <strong>{{item.price}} </strong>
+          <em>{{item.average}}</em>
+        </div>
+        <div class="address">{{item.address_name}} {{item.address}}</div>
+        <div class="info">{{item.info}}</div>
+      </a>
+    </div>
+    <div class="pagination">
+      <button v-for="item in 11" :key="item" :class="{active: item === page}" @click="change(item)">{{item}}</button>
+    </div>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.0.7/vue.global.prod.js"></script>
+  <script>
+    const { createApp, onMounted, ref, computed } = Vue
+    const fetchJSON = async (i = 'all') => {
+      const { data } = await axios(`data/${i}.json`)
+      return data
+    }
+
+    const app = Vue.createApp({
+      setup() {
+        const list = ref([])
+        const page = ref(1)
+        const total = 660
+        const size = 60
+
+        data = computed(() => {
+          return list.value.slice((page.value - 1) * size, page.value * size)
+        })
+
+        const fetchData = async () => {
+          list.value = await fetchJSON()
+        }
+
+        onMounted(fetchData)
+
+        const change = (value) => {
+          page.value = value
+          window.scrollTo(0, 0)
+        }
+
+        return { data, page, change }
+      },
+    })
+    app.mount('#app')
+  </script>
+</body>
+
+</html>

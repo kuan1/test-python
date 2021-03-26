@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>郑州某网房价数据</title>
+  <style>
+    body {
+      background-color: #f7f7f7;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .container {
+      display: grid;
+      width: 92%;
+      margin: 0 auto;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+      background-color: #fff;
+      border: 3px;
+      min-height: 80vh;
+      box-sizing: 0 0 3px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>
+    <span>郑州某网房价数据</span>
+    <a href="./index.html">返回查看</a>
+  </h2>
+  <div class="container">
+    <div class="card card1"></div>
+    <div class="card card2"></div>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.0.2/echarts.min.js"></script>
+  <script>
+    const option = {
+      title: {
+        text: '郑州房价（总价万元）'
+      },
+      tooltip: {},
+      color: ['#40A9FF'],
+      dataZoom: [
+        {
+          start: 85,
+          end: 100
+        }
+      ],
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: []
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '总价',
+          type: 'line',
+          areaStyle: {},
+          data: []
+          // data: [5, 20, 36, 10, 10, 20]
+        }
+      ]
+    };
+    const option2 = {
+      title: {
+        text: '郑州房价（均价元/㎡）'
+      },
+      tooltip: {},
+      color: ['#1da57a'],
+      dataZoom: [
+        {
+          start: 85,
+          end: 100
+        }
+      ],
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: []
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          name: '总价',
+          type: 'line',
+          areaStyle: {},
+          data: []
+          // data: [5, 20, 36, 10, 10, 20]
+        }
+      ]
+    };
+
+    const myChart = echarts.init(document.querySelector('.card1'))
+    const myChart2 = echarts.init(document.querySelector('.card2'))
+    myChart.setOption(option)
+    myChart2.setOption(option2)
+
+    const fetchJSON = async (i = 'all') => {
+      const { data } = await axios(`data/${i}.json`)
+      return data
+    }
+
+    async function init() {
+      const data = await fetchJSON()
+      option2.xAxis.data = option.xAxis.data = data.map(item => item.address || '未知')
+      option.series[0].data = data.map(item => parseInt(item.price) || 0)
+      option2.series[0].data = data.map(item => parseInt(item.average) || 0)
+      myChart.setOption(option)
+      myChart2.setOption(option2)
+    }
+
+    init()
+
+
+  </script>
+</body>
+
+</html>
