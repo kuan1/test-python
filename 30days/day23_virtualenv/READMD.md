@@ -7,6 +7,7 @@ https://github.com/Asabeneh/30-Days-Of-Python/blob/master/23_Day_Virtual_environ
 
 ```bash
 virtualenv venv
+source env/bin/activate
 ```
 
 ## check virtualenv
